@@ -1,6 +1,6 @@
 {
   "name": "@datatypes/interval",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "ISO 8601 based interval module",
   "main": "build/index",
   "directories": {
