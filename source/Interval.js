@@ -35,7 +35,7 @@ export default class Interval {
 	}
 
 	clone () {
-		return new Interval(this.isoString)
+		return new Interval(this.string)
 	}
 
 	get start () { return this._start }

@@ -2,7 +2,7 @@ import runTest from 'ava'
 import expect from 'unexpected'
 import moment from '@datatypes/moment'
 
-import Interval from '../build/Interval'
+import Interval from '../source/Interval'
 
 
 function getYearInterval (title) {
