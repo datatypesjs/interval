@@ -1,0 +1,84 @@
+import runTest from 'ava'
+import expect from 'unexpected'
+import moment from '@datatypes/moment'
+
+import Interval from '../build/Interval'
+
+
+function getYearInterval (title) {
+	const startMoment = moment('2015')
+	const endMoment = moment('2016')
+	startMoment.string
+	endMoment.string
+
+	return {
+		string: title,
+		start: startMoment,
+		end: endMoment,
+	}
+}
+
+
+runTest('2015/2016', test => {
+	const interval = new Interval(test.title)
+	expect(interval.object, 'to equal', getYearInterval(test.title))
+})
+
+
+runTest('2015--2016', test => {
+	const interval = new Interval(test.title)
+	expect(interval.object, 'to equal', getYearInterval(test.title))
+})
+
+
+runTest('2015-09--2015-11', test => {
+	const interval = new Interval(test.title)
+	const startMoment = moment('2015-09')
+	const endMoment = moment('2015-11')
+	startMoment.string
+	endMoment.string
+
+	const intervalObject = {
+		string: test.title,
+		start: startMoment,
+		end: endMoment,
+	}
+	expect(interval.object, 'to equal', intervalObject)
+})
+
+
+runTest('2015-11-24--2015-11-30', test => {
+	const startMoment = moment('2015-11-24')
+	const endMoment = moment('2015-11-30')
+	startMoment.string
+	endMoment.string
+
+	expect(
+		new Interval(test.title).object,
+		'to equal',
+		{
+			string: test.title,
+			start: startMoment,
+			end: endMoment,
+		}
+	)
+})
+
+
+runTest('2015-11-24T17:23:45.234Z--2015-11-30T09:11:14.567Z', test => {
+	const interval = new Interval(test.title)
+	const startMoment = moment('2015-11-24T17:23:45.234Z')
+	const endMoment = moment('2015-11-30T09:11:14.567Z')
+	startMoment.string
+	endMoment.string
+
+	expect(
+		new Interval(test.title).object,
+		'to equal',
+		{
+			string: test.title,
+			start: startMoment,
+			end: endMoment,
+		}
+	)
+})
