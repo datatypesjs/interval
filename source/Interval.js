@@ -4,8 +4,10 @@ import Duration from '@datatypes/duration'
 
 export default class Interval {
 	constructor (intervalString) {
-		const intervalSeparator = intervalString.includes('--') ? '--' : '/'
-		const items = intervalString.split(intervalSeparator)
+		// Use -- as default separator
+		const separator = '--'
+		intervalString = intervalString.replace(/\//g, separator)
+		const items = intervalString.split(separator)
 
 		if (items) {
 			this._isoString = intervalString
@@ -39,10 +41,22 @@ export default class Interval {
 	}
 
 	get start () { return this._start }
-	set start (start) { this._start = start }
+	set start (start) {
+		delete this._duration
+		this._start = start
+	}
 
 	get end () { return this._end }
-	set end (end) { this._end = end }
+	set end (end) {
+		delete this._duration
+		this._end = end
+	}
+
+	get duration () { return this._duration }
+	set duration (duration) {
+		delete this._end
+		this._duration = duration
+	}
 
 	get string () {
 		if (!this._isoString) {
@@ -61,6 +75,7 @@ export default class Interval {
 			string: this.string,
 			start: this.start,
 			end: this.end,
+			duration: this.duration,
 		}
 	}
 

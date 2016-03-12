@@ -2,25 +2,32 @@ import Interval from './Interval'
 
 
 export default class RecurringInterval extends Interval {
-	constructor (intervalString) {
-		const intervalSeparator = intervalString.includes('--') ? '--' : '/'
-		const fragments = intervalString.split(intervalSeparator)
-		const numberOfRepetitions = Number(fragments.shift().substr(1))
 
-		super(fragments.join(intervalSeparator))
+	constructor (intervalString) {
+		const separator = '--'
+		intervalString = intervalString.replace(/\//g, separator)
+		const fragments = intervalString.split(separator)
+		const numberOfRecurrences = Number(fragments.shift().substr(1))
+
+		super(fragments.join(separator))
 
 		this._isoString = intervalString
-		this._numberOfRepetitions = numberOfRepetitions
+		this._numberOfRecurrences = numberOfRecurrences
 	}
 
 	clone () {
-		return new RecurringInterval(this.isoString)
+		return new RecurringInterval(this.string)
+	}
+
+	get numberOfRecurrences () { return this._numberOfRecurrences }
+	set numberOfRecurrences (recurrences) {
+		this._numberOfRecurrences = recurrences
 	}
 
 
-	get isoString () {
+	get string () {
 		if (!this._isoString) {
-			this._isoString = 'R' + this.numberOfRepetitions +
+			this._isoString = 'R' + this.numberOfRecurrences +
 				'--' + super.string
 		}
 
@@ -31,7 +38,7 @@ export default class RecurringInterval extends Interval {
 		return Object.assign(
 			super.object,
 			{
-				numberOfRepetitions: this.numberOfRepetitions
+				numberOfRecurrences: this.numberOfRecurrences
 			}
 		)
 	}
