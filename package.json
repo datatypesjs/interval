@@ -2,7 +2,7 @@
   "name": "@datatypes/interval",
   "version": "0.2.0",
   "description": "ISO 8601 based interval module",
-  "main": "build/Interval",
+  "main": "build/index",
   "directories": {
     "lib": "source",
     "test": "test"

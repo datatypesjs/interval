@@ -3,7 +3,7 @@ import expect from 'unexpected'
 import moment from '@datatypes/moment'
 import Duration from '@datatypes/duration'
 
-import Interval from '../source/Interval'
+import Interval from '../source/index'
 
 
 function getYearInterval () {

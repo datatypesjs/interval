@@ -3,7 +3,7 @@ import expect from 'unexpected'
 import momentFromString from '@datatypes/moment'
 import Duration from '@datatypes/duration'
 
-import RecurringInterval from '../source/RecurringInterval'
+import {RecurringInterval} from '../source/index'
 
 
 runTest('R3/2015-11-25T15/P1H30M', test => {

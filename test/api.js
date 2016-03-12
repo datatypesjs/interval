@@ -2,7 +2,7 @@ import runTest from 'ava'
 import expect from 'unexpected'
 import moment from '@datatypes/moment'
 
-import Interval from '../source/Interval'
+import Interval from '../source/index'
 
 
 runTest('clone', test => {
