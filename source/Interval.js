@@ -43,18 +43,21 @@ export default class Interval {
 	get start () { return this._start }
 	set start (start) {
 		delete this._duration
+		delete this._isoString
 		this._start = start
 	}
 
 	get end () { return this._end }
 	set end (end) {
 		delete this._duration
+		delete this._isoString
 		this._end = end
 	}
 
 	get duration () { return this._duration }
 	set duration (duration) {
 		delete this._end
+		delete this._isoString
 		this._duration = duration
 	}
 
