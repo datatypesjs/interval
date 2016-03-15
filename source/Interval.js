@@ -9,30 +9,46 @@ export default class Interval {
 		intervalString = intervalString.replace(/\//g, separator)
 		const items = intervalString.split(separator)
 
-		if (items) {
-			this._isoString = intervalString
-
-			// e.g. P1D--2015-11-25
-			if (items[0].startsWith('P')) {
-				this._duration = new Duration(items[0])
-				this._end = moment(items[0])
-				this._start = subtract(this._end, this._duration)
-			}
-			// e.g. 2015-11-25--P1D
-			else if (items[1].startsWith('P')) {
-				this._duration = new Duration(items[1])
-				this._start = moment(items[0])
-				this._end = add(this._start, this._duration)
-			}
-			// e.g. 2015-11-25--2015-11-26
-			else {
-				this._start = moment(items[0])
-				this._end = moment(items[1])
-				this._duration = this._start.maximumOffset(this._end)
-			}
+		if (!items) {
+			throw new Error(
+				'A valid interval string must be used for instantiation ' +
+				'and not "' + intervalString + '"'
+			)
 		}
+
+		this._isoString = intervalString
+
+		// e.g. P1D--2015-11-25
+		if (items[0].startsWith('P')) {
+			this._duration = new Duration(items[0])
+			this._end = moment(items[0])
+			this._start = subtract(this._end, this._duration)
+		}
+		// e.g. 2015-11-25--P1D
+		else if (items[1].startsWith('P')) {
+			this._duration = new Duration(items[1])
+			this._start = moment(items[0])
+			this._end = add(this._start, this._duration)
+		}
+		// e.g. 2015-11-25--2015-11-26
 		else {
-			throw new Error('No interval string was passed')
+			const simplified0 = items[0].replace(/[0-9]/g, 0)
+			const simplified1 = items[1].replace(/[0-9]/g, 0)
+
+			if ( // the parts don't have the same pattern
+				(simplified0 !== simplified1) ||
+				// or part 2 doesn't start with a year
+				!/^[0-9]{4}/.test(items[1])
+			) {
+				// part 2 is an incomplete representation
+				// and must be completed
+				// e.g. 2015-12-11--15 => 2015-12-11--2015-12-15
+				items[1] = items[0].slice(0, -items[1].length) + items[1]
+			}
+
+			this._start = moment(items[0])
+			this._end = moment(items[1])
+			this._duration = this._start.maximumOffset(this._end)
 		}
 	}
 
