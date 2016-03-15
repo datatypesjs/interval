@@ -37,6 +37,6 @@
   "homepage": "https://github.com/datatypesjs/interval#readme",
   "dependencies": {
     "@datatypes/duration": "^0.4.0",
-    "@datatypes/moment": "^0.4.0"
+    "@datatypes/moment": "^0.6.0"
   }
 }
