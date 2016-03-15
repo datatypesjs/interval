@@ -1,4 +1,4 @@
-import moment, {add, subtract} from '@datatypes/moment'
+import momentFromString, {add, subtract} from '@datatypes/moment'
 import Duration from '@datatypes/duration'
 
 
@@ -21,13 +21,13 @@ export default class Interval {
 		// e.g. P1D--2015-11-25
 		if (items[0].startsWith('P')) {
 			this._duration = new Duration(items[0])
-			this._end = moment(items[0])
+			this._end = momentFromString(items[0])
 			this._start = subtract(this._end, this._duration)
 		}
 		// e.g. 2015-11-25--P1D
 		else if (items[1].startsWith('P')) {
 			this._duration = new Duration(items[1])
-			this._start = moment(items[0])
+			this._start = momentFromString(items[0])
 			this._end = add(this._start, this._duration)
 		}
 		// e.g. 2015-11-25--2015-11-26
@@ -46,8 +46,8 @@ export default class Interval {
 				items[1] = items[0].slice(0, -items[1].length) + items[1]
 			}
 
-			this._start = moment(items[0])
-			this._end = moment(items[1])
+			this._start = momentFromString(items[0])
+			this._end = momentFromString(items[1])
 			this._duration = this._start.maximumOffset(this._end)
 		}
 	}
@@ -75,6 +75,20 @@ export default class Interval {
 		delete this._end
 		delete this._isoString
 		this._duration = duration
+	}
+
+	contains (momentOrInstant) {
+		// is Instant
+		if (typeof momentOrInstant.getTime === 'function') {
+			// not `<=`, as `upperLimit` is exclusive
+			return (momentOrInstant >= this.start.lowerLimit) &&
+				(momentOrInstant < this.end.upperLimit)
+		}
+		// is Moment
+		else {
+			return (momentOrInstant.lowerLimit >= this.start.lowerLimit) &&
+				(momentOrInstant.upperLimit <= this.end.upperLimit)
+		}
 	}
 
 	get string () {
